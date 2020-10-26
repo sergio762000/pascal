@@ -1,0 +1,11 @@
+program ManualType;
+type
+	MyNumber = real;
+	SimObjectId = integer;
+	digit10 = 0..9;
+	LatinCaps = 'A'..'Z';
+	RainbowColors = (RcRed, RcOrange, RcYellow, RcGreen, RcBlue, RcIndigo, RcViolet);
+	Signals = (SigRed, SigYellow, SigGreen);
+	
+	//Arrays
+	real100 = array [1..100] of real;
