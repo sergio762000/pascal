@@ -7,24 +7,33 @@ program first_task_pointer;
 	на это количество запрещается.
 }
 type
-    ftpptr = ^ftp;
-    ftp = record
-        data: integer;
-        next: ftpptr;
-    end;
-var
-    n: integer;
-    {p: ^integer;}
-    fcell: ftpptr;
-    
+	pItem = ^item;
+    item = record
+		data: integer;
+		next: pItem;
+	end;
+
+function CreateNode(n: integer; var Head: pItem): Head;
 begin
-    { бесконечный цикл для чтения из потока. Пока не конец потока }
-    while not SeekEof do
-    begin
-        read(n);
-        new(fcell);
-        fcell^.data := n;
-        new (fcell^.next);
-        writeln(fcell^.data);
-    end;
+	writeln(n);
+	writeln('*-----------*');
+	Head^.data := n;
+	Head^.next := nil;
+end;
+
+
+var
+	n: integer;
+	Head, newP: pItem;
+
+begin
+   while not SeekEof do
+   begin
+   		read(n);
+		new(Head);
+		Head := CreateNode(n, Head);
+		new(newP);
+		newP^.data := n;
+		newP^.next := nil;
+   end;
 end.
