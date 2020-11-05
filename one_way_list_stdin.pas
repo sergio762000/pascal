@@ -1,55 +1,84 @@
 program one_way_list_stdin;
-
-
+{
+	Написать программу, которая читает целые числа из потока
+	стандартного ввода до возникновения ситуации "конец файла",
+	после чего печатает все введенные числа в обратном порядке.
+	Количество чисел заранее неизвестно, вводить явные ограничения
+	на это количество запрещается.
+}
 type
-    pointp = ^item;
-    item = record
+    pointp = ^item;				// указатель на item;
+    item = record				// item -это record
         data: integer;
         next: pointp;
     end;
 
 var
-    n, k: integer;
+	a: array of integer;
+    i, j, n, k, c: integer;
     head, x, y: pointp;
 
-procedure last_input_first_output(n: integer; pp: pointp);
-var
-    y: pointp;
-    arr: array [0..k] of integer;
-begin   
-end;
-
-
 begin
-    head := nil;
-    k := 0;
+    head := nil;				// 
+    k := 1;
     new(x);
-    while not SeekEof do
+	head := x;
+
+	read(n);				// помещаем введенное значение в переменную
+    x^.data := n;			// Заполняем новую запись
+    x^.next := nil;			// Заполняем новую запись
+	
+    writeln('Записываем первое значение списка: ', n);
+	
+	while not SeekEof do		// Если не Ctrl-D, то
     begin
-        read(n);
-        x^.data := n;
-        x^.next := nil;
-        if head = nil then
-            begin
-                head := x;
-            end;        
-        new(x^.next);
-        x := x^.next;
+		read(n);				// Читаем символ со стандартного ввода
+        new(x^.next);			// Создаем новый указатель
+        x := x^.next;			// Перемещаем х на новое значение
+		
+		x^.data := n;			// Заполняем новую запись
+		x^.next := nil;			// Заполняем новую запись
         k := k + 1;
+		writeln('Введено новое значение: ', n);
     end;    
     // - введен символ Ctrl-D
-
+	
+	SetLength(a, k + 1);		// Устанавливаем размер массива
+	
+	y := head;
+	c := 1;
+	
+	while (y^.next) <> nil do
+		begin
+			a[c] := y^.data;	// Заполняем массив
+			y := y^.next;		// Перемещаемся на след указатель
+			c := c + 1;			// Увеличиваем 
+		end;
+	a[c] := y^.data;			// Заполняем последний элемент массива
+	
+	
     writeln('Выводим содержимое .data в строку - FIFO');
-    y := head;
-    write('List element: ');
-    while y^.next <> nil do
-    begin
-        write(y^.data, ', ');
-        y := y^.next;
-    end;
-    writeln('');
+    for i := 1 to 2 do
+	begin
+		write('List element: ');
+		for j := 1 to High(a) do
+			if High(a) - j <> 0 then
+				write(a[j], ', ')
+			else
+				writeln(a[j], '.');
+	end;
     writeln('Всего элементов - ', k);
-    last_input_first_output(k, head);
-    writeln('Всего элементов - ', k);
+	
+	writeln('Выводим содержимое .data в строку - LIFO');
+	n := 0;
+	write('List element: ');
+	for i := 1 to High(a) do
+		begin
+			write(a[High(a) - n]);
+			if (High(a) - n) <> 1 then
+				write(', ');
+			n := n + 1;
+		end;
+	writeln('.');
+	writeln('Всего элементов - ', High(a));
 end.
-
